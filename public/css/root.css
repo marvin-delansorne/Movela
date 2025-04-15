@@ -1,0 +1,37 @@
+/*  ----------- Liens à mettre dans les différentes pages html
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/Movela/public/css/root.css">
+*/
+
+.manrope-reg {
+    font-family: "Manrope", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+:root {
+    --main-font: "Manrope";
+
+    --bg-main: #1A1623;
+    --bg-sec: #0E0C11;
+    --primary-color: #FFAA2B;
+    --cta-color: #FFAA2B;
+    --cta-hover: #FFC85C;
+    --new-films: #3CE6B0;
+    --text-color: #F0E9FF;
+    --grey-color: #A69CB2;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    height: 100vh;
+    font-family: var(--main-font);
+    background-color: var(--bg-main);
+}
