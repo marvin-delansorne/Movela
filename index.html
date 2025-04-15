@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./public/css/home.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
+    <script src="./controllers/js/test.js"defer ></script>
     <title>Document</title>
-    <script type="module" src="../test.js" defer></script>
+  
+ 
+
 </head>
 <body>
     <section class="heropage">
@@ -14,10 +19,23 @@
                 <h1>Titre du film</h1>
                             <p>Matt Murdock capacités extraordinaires, lutte pour la justice à travers son cabinet d'avocats en pleine effervescence. Pendant ce temps, l'ancien chef mafieux Wilson Fisk poursuit ses ambitions politiques à New York. Alors que leurs anciennes identités refont surface, les deux hommes se </p>
                     <div class="btn_heropage">
+                        <div class="addlist">
                                 <a href="#" class="btn"><button>Ajouter à la liste</button></a>
+                            </div>
                                 <a href="#" class="btn"><button>+</button></a>
                     </div>
+            </div>
         </div>
     </section>
- </body>
+
+    <section id="movie-posters" class="movie-posters">
+        <h2>Films les mieux notés</h2>
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </section>
+</body>
 </html>

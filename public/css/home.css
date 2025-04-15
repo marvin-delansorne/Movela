@@ -1,35 +1,91 @@
 body{
+    background-color: #1A1623;
     margin: 0;
     padding: 0;
 }
 
 .imgheropage{
-    background: url(../assets/imgheropage.png) lightgray 50% / cover no-repeat;
-box-shadow: 0px -102px 75.5px 0px #1A1623 inset, 481px 0px 113.9px 0px #1A1623 inset;
-width: 100%;
-height: 100vh;
+    background: url(../assets/progileimg.png) black 50% repeat;
+    box-shadow: 0px -102px 75.5px 0px #1A1623 inset, 600px 50px 113.9px 0px #1A1623 inset;
+    width: 100%;
+    height: 100vh;
 }
 
 .heropage_content{
+  
     padding-top: 200px;
-    width: 20%;
     padding-left: 50px;
+    width: 20%;
     color: white;
     display: flex;
     flex-direction: column;
     align-items: start;
     justify-content: center;
     text-align: justify ;
+    gap: 50px;
+   
+}
+
+.heropage_content h1{
+    font-size: 50px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .btn_heropage{
     display: flex;
     gap: 15px;
-    padding: 20px;
     button{
-        gap: 15px;
         padding: 20px;
     }
 }
+.addlist button{
+    width: 250px
+}
 
+h2{
+    color: white;
+}
+
+.movie-posters {
+    padding: 20px;
+    color: #fff;
+    text-align: center;
+}
+
+.movie-posters h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #fff;
+}
+
+.swiper-container {
+    width: 100%;
+    padding: 20px 0;
+}
+
+.swiper-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.swiper-slide img {
+    width: 100%;
+    max-width: 250px;
+    box-shadow: 0px 0px 25.8px 0px black;
+    margin-bottom: 10px;
+}
+
+.swiper-slide p {
+    font-size: 14px;
+    color: #fff;
+}
+
+.movie-posters{
+    overflow: hidden     ;
+}
 
