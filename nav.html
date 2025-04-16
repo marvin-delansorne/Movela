@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="public/css/nav.css">
+    <title>MOVELA</title>
+</head>
+<body>
+    <div class="overlay"></div>
+    
+    <nav class="navbar">
+        <div class="nav-section left">
+            <div class="burger-icon" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="desktop-nav">
+                <a href="#" class="active">Accueil</a>
+                <a href="#">Films</a>
+                <a href="#">Séries</a>
+                <a href="#">Favoris</a>
+            </div>
+        </div>
+        
+        <div class="logo-container">
+            <div class="logo">MOVELA</div>
+        </div>
+        
+        <div class="nav-section right">
+            <div class="search-box">
+                <button class="btn-search"><i class="fas fa-search"></i></button>
+                <input type="text" class="input-search" placeholder="Rechercher...">
+            </div>
+        </div>
+    </nav>
+
+    <div class="burger-menu">
+        <div class="menu-header">
+            <div class="menu-header-text">Menu</div>
+        </div>
+        <ul class="menu-list">
+            <li class="menu-item"><a href="#" class="active">Accueil</a></li>
+            <li class="menu-item"><a href="#">Films</a></li>
+            <li class="menu-item"><a href="#">Séries</a></li>
+            <li class="menu-item"><a href="#">Favoris</a></li>
+        </ul>
+    </div>
+
+    <script src="controllers/js/nav.js"></script>
+</body>
+</html>

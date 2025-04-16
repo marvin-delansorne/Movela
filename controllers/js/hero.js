@@ -14,6 +14,8 @@ async function updateHeroSection() {
             
             const movie = movies[0];
 
+            let currentPage = 2;
+
             const heroSection = document.querySelector('.imgheropage');
             heroSection.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`;
             heroSection.style.backgroundSize = 'cover';
@@ -29,7 +31,6 @@ async function updateHeroSection() {
         console.error('Erreur lors de la récupération des films récents :', error);
     }
 }
-
 
 updateHeroSection();
 });

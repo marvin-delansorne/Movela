@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./public/css/home.css">
-    <link rel="stylesheet" href="./public/css/root.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
-    <script src="./controllers/js/carroussel.js"defer ></script>
-    <script src="./controllers/js/hero.js"defer></script>
-    <title>Document</title>
+    <link rel="stylesheet" href="./public/css/root.css">
+    <link rel="stylesheet" href="./public/css/nav.css">
+    <link rel="stylesheet" href="./public/css/home.css">
+    <title>MOVELA - Accueil</title>
 </head>
 <body>
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
+
     <section class="heropage">
         <div class="imgheropage">
             <div class="heropage_content">
@@ -37,16 +39,26 @@
     <section id="movie-posters" class="movie-posters">
         <h2>Films les mieux notés</h2>
         <div class="swiper-container">
-            <div class="swiper-wrapper">
-            </div>
-      
+            <div class="swiper-wrapper"></div>
         </div>
     </section>
+    
     <section id="tv-shows" class="tv-shows">
         <h2>Séries les mieux notées</h2>
         <div class="swiper-container-tv">
-            <div class="swiper-wrapper">
+            <div class="swiper-wrapper"></div>
         </div>
     </section>
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="./components/nav.js"></script>
+    <script src="./controllers/js/nav.js"></script>
+    <script src="./controllers/js/carroussel.js" defer></script>
+    <script src="./controllers/js/hero.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initNavbar();
+        });
+    </script>
 </body>
 </html>
