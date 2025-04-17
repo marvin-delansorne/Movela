@@ -8,6 +8,49 @@ document.addEventListener('DOMContentLoaded', () => {
     let autoSlideInterval;
     const SLIDE_DURATION = 10000;
 
+    // Initialisation des favoris
+    function initializeFavorites() {
+        if (!localStorage.getItem('favorites')) {
+            localStorage.setItem('favorites', JSON.stringify([]));
+        }
+    }
+
+    // Vérifie si un film est dans les favoris
+    function isFavorite(movieId) {
+        const favorites = JSON.parse(localStorage.getItem('favorites'));
+        return favorites.includes(movieId);
+    }
+
+    // Ajoute ou retire un film des favoris
+    function toggleFavorite(movieId) {
+        const favorites = JSON.parse(localStorage.getItem('favorites'));
+        const index = favorites.indexOf(movieId);
+        
+        if (index === -1) {
+            favorites.push(movieId);
+        } else {
+            favorites.splice(index, 1);
+        }
+        
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        updateFavoriteButton(movieId);
+    }
+
+    // Met à jour l'apparence du bouton favori
+    function updateFavoriteButton(movieId) {
+        const favoriteBtn = document.getElementById('hero-favorite-btn');
+        if (!favoriteBtn) return;
+
+        if (isFavorite(movieId)) {
+            favoriteBtn.innerHTML = '<i class="fa fa-check" style="font-size:40px;color:#4CAF50"></i>';
+            favoriteBtn.classList.add('added');
+        } else {
+            favoriteBtn.innerHTML = '<i class="fa fa-plus" style="font-size:40px;color:var(--cta-color)"></i>';
+            favoriteBtn.classList.remove('added');
+        }
+    }
+
+    // Récupère les films actuellement au cinéma
     async function fetchNowPlayingMovies() {
         try {
             const response = await fetch(nowPlayingEndpoint);
@@ -21,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Met à jour la section hero avec le film actuel
     function updateHeroSection() {
         if (movies.length === 0) return;
 
@@ -28,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const heroSection = document.querySelector('.imgheropage');
         const titleElement = document.querySelector('.heropage_content h1');
         const descriptionElement = document.querySelector('.heropage_content p');
+        const favoriteBtn = document.getElementById('hero-favorite-btn');
 
         heroSection.style.opacity = 0;
         setTimeout(() => {
@@ -38,9 +83,21 @@ document.addEventListener('DOMContentLoaded', () => {
             descriptionElement.textContent = movie.overview;
             heroSection.style.opacity = 1;
             updateIndicators();
+            
+            // Met à jour le bouton favori
+            updateFavoriteButton(movie.id);
+            
+            // Ajoute l'événement click
+            if (favoriteBtn) {
+                favoriteBtn.onclick = (e) => {
+                    e.preventDefault();
+                    toggleFavorite(movie.id);
+                };
+            }
         }, 500);
     }
 
+    // Crée les indicateurs de slide
     function createIndicators() {
         const indicatorsContainer = document.querySelector('.hero-indicators');
         indicatorsContainer.innerHTML = '';
@@ -69,16 +126,18 @@ document.addEventListener('DOMContentLoaded', () => {
         updateIndicators();
     }
 
+    // Anime la barre de progression
     function startProgressAnimation(progressBar) {
-    progressBar.style.width = '0%';
-    progressBar.style.transition = 'none';
-    
-    void progressBar.offsetWidth;
-    
-    progressBar.style.transition = `width ${SLIDE_DURATION}ms linear`;
-    progressBar.style.width = '100%';
-}
+        progressBar.style.width = '0%';
+        progressBar.style.transition = 'none';
+        
+        void progressBar.offsetWidth;
+        
+        progressBar.style.transition = `width ${SLIDE_DURATION}ms linear`;
+        progressBar.style.width = '100%';
+    }
 
+    // Met à jour les indicateurs
     function updateIndicators() {
         const indicators = document.querySelectorAll('.indicator');
         
@@ -102,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Démarre le défilement automatique
     function startAutoSlide() {
         autoSlideInterval = setInterval(() => {
             currentIndex = (currentIndex + 1) % movies.length;
@@ -109,11 +169,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }, SLIDE_DURATION);
     }
 
+    // Réinitialise le défilement automatique
     function resetAutoSlide() {
         clearInterval(autoSlideInterval);
         startAutoSlide();
     }
 
+    // Initialisation
+    initializeFavorites();
     fetchNowPlayingMovies();
     setupPauseOnHover();
 });

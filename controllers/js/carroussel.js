@@ -1,166 +1,132 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const API_KEY = "8c4b867188ee47a1d4e40854b27391ec";
+    const BASE_URL = 'https://api.themoviedb.org/3';
+    let favorites = JSON.parse(localStorage.getItem('movieFavorites')) || [];
 
-const API_KEY = "8c4b867188ee47a1d4e40854b27391ec";
-const BASE_URL = 'https://api.themoviedb.org/3';
-
-async function fetchMoviePosters() {
-    const movieEndpoint = `${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=fr-FR&page=1`;
-
-    try {
-        const response = await fetch(movieEndpoint);
-        const data = await response.json();
-        const movies = data.results;
-
-        const swiperWrapper = document.querySelector('.swiper-container .swiper-wrapper');
-
-        movies.forEach(movie => {
-            const slide = document.createElement('div');
-            slide.className = 'swiper-slide';
-            slide.innerHTML = `
-                <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}"/>
-                <button class="add-to-favorites"><i class="fa fa-plus"></i>Favoris</button>
-                <div class="movie-info">
-                    <h3>${movie.title}</h3>
-                    <p>${movie.release_date?.substring(0, 4) || 'N/A'}</p>
-                    <p class="rating"><i class="fas fa-star"></i> ${movie.vote_average?.toFixed(1) || 'N/A'}/10</p>
-                </div>
-            `;
-            swiperWrapper.appendChild(slide);
-        });
-
-        // Initialiser Swiper.js
-        new Swiper('.swiper-container', {
-            loop: true,
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            breakpoints: {
-                640: { slidesPerView: 2 },
-                768: { slidesPerView: 3 },
-                1024: { slidesPerView: 5 },
-            },
-        });
-    } catch (error) {
-        console.error('Erreur lors de la récupération des films :', error);
+    // Fonction pour basculer l'état favori
+    function toggleFavorite(movieId, button) {
+        const index = favorites.indexOf(movieId);
+        if (index === -1) {
+            favorites.push(movieId);
+            button.classList.add('added');
+            button.innerHTML = '<i class="fas fa-check"></i> Ajouté';
+        } else {
+            favorites.splice(index, 1);
+            button.classList.remove('added');
+            button.innerHTML = '<i class="fas fa-plus"></i> Favoris';
+        }
+        localStorage.setItem('movieFavorites', JSON.stringify(favorites));
     }
-}
 
-fetchMoviePosters();
+    // Gestionnaire d'événements pour les favoris
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('.add-to-favorites')) {
+            e.preventDefault();
+            e.stopPropagation();
+            const button = e.target.closest('.add-to-favorites');
+            const movieId = button.dataset.movieId;
+            toggleFavorite(movieId, button);
+        }
+    });
 
-async function fetchTopRatedTVShows() {
-    const tvEndpoint = `${BASE_URL}/tv/top_rated?api_key=${API_KEY}&language=fr-FR&page=1`;
+    // Fonction pour créer une carte de film
+    function createMovieCard(media, container, isTvShow = false) {
+        const mediaCard = document.createElement('div');
+        mediaCard.className = 'swiper-slide';
+        mediaCard.dataset.id = media.id;
+        
+        const posterPath = media.poster_path 
+            ? `https://image.tmdb.org/t/p/w500${media.poster_path}`
+            : 'https://via.placeholder.com/500x750?text=Image+indisponible';
+        
+        const isFavorite = favorites.includes(media.id.toString());
+        const title = isTvShow ? media.name : media.title;
+        const releaseDate = isTvShow ? media.first_air_date : media.release_date;
+        const favButtonClass = isFavorite ? 'add-to-favorites added' : 'add-to-favorites';
+        const favButtonContent = isFavorite ? '<i class="fas fa-check"></i> Ajouté' : '<i class="fas fa-plus"></i> Favoris';
+        
+        mediaCard.innerHTML = `
+            <img src="${posterPath}" alt="${title}" loading="lazy">
+            <div class="movie-info">
+                <h3>${title}</h3>
+                <p>${releaseDate?.substring(0, 4) || 'N/A'}</p>
+                <p class="rating"><i class="fas fa-star"></i> ${media.vote_average?.toFixed(1) || 'N/A'}/10</p>
+            </div>
+            <button class="${favButtonClass}" data-movie-id="${media.id}">
+                ${favButtonContent}
+            </button>
+        `;
 
-    try {
-        const response = await fetch(tvEndpoint);
-        const data = await response.json();
-        const tvShows = data.results;
-
-        const swiperWrapper = document.querySelector('.swiper-container-tv .swiper-wrapper');
-
-        tvShows.forEach(show => {
-            const slide = document.createElement('div');
-            slide.className = 'swiper-slide';
-            slide.innerHTML = `
-                <img src="https://image.tmdb.org/t/p/w500${show.poster_path}" alt="${show.name}" />
-                <button class="add-to-favorites"><i class="fa fa-plus"></i>Favoris</button>
-                <div class="serie-info">
-                    <h3><stong>${show.name}<stong></h3>
-                    <p>${show.first_air_date?.substring(0, 4) || 'N/A'}</p>
-                    <p class="rating"><i class="fas fa-star"></i> ${show.vote_average?.toFixed(1) || 'N/A'}/10</p>
-                </div>
-            `;
-            swiperWrapper.appendChild(slide);
+        mediaCard.addEventListener('click', (e) => {
+            if (!e.target.closest('.add-to-favorites')) {
+                const mediaType = isTvShow ? 'tv' : 'movie';
+                window.location.href = `details.html?id=${media.id}&type=${mediaType}`;
+            }
         });
 
-        // Initialiser Swiper.js
-        new Swiper('.swiper-container-tv', {
-            loop: true,
-            navigation: {
-                nextEl: '.swiper-button-next-tv',
-                prevEl: '.swiper-button-prev-tv',
-            },
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            breakpoints: {
-                640: { slidesPerView: 2 },
-                768: { slidesPerView: 3 },
-                1024: { slidesPerView: 5 },
-            },
-        });
-    } catch (error) {
-        console.error('Erreur lors de la récupération des séries :', error);
+        container.querySelector('.swiper-wrapper').appendChild(mediaCard);
     }
-}
 
-fetchTopRatedTVShows();
+    // Configuration Swiper commune
+    const swiperConfig = {
+        loop: true,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+        breakpoints: {
+            320: { slidesPerView: 2, spaceBetween: 10 },
+            640: { slidesPerView: 3, spaceBetween: 15 },
+            1024: { slidesPerView: 5, spaceBetween: 20 },
+        }
+    };
 
-async function fetchLatestReleases() {
-    const latestEndpoint = `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=fr-FR&page=1`;
-
-    try {
-        const response = await fetch(latestEndpoint);
-        const data = await response.json();
-        const movies = data.results;
-
-        const swiperWrapper = document.querySelector('.swiper-container-latest .swiper-wrapper');
-
-        movies.forEach(movie => {
-            const slide = document.createElement('div');
-            slide.className = 'swiper-slide';
-            slide.innerHTML = `
-                <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}" />
-                <button class="add-to-favorites"><i class="fa fa-plus"></i>Favoris</button>
-                <div class="movie-info">
-                    <h3>${movie.title}</h3>
-                    <p> ${movie.release_date?.substring(0, 4) || 'N/A'}</p>
-                    <p class="rating"><i class="fas fa-star"></i>${movie.vote_average?.toFixed(1) || 'N/A'}/10</p>
-                </div>
-            `;
-            swiperWrapper.appendChild(slide);
-        });
-
-        // Initialiser Swiper.js pour les dernières sorties
-        new Swiper('.swiper-container-latest', {
-            loop: true,
-            navigation: {
-                nextEl: '.swiper-button-next-latest',
-                prevEl: '.swiper-button-prev-latest',
-            },
-            autoplay: {
-                delay: 5000, // Changement automatique toutes les 5 secondes
-                disableOnInteraction: false,
-            },
-            slidesPerView: 5, // Nombre de films visibles
-            spaceBetween: 20, // Espacement entre les slides
-            breakpoints: {
-                640: { slidesPerView: 2 },
-                768: { slidesPerView: 3 },
-                1024: { slidesPerView: 5 },
-            },
-        });
-    } catch (error) {
-        console.error('Erreur lors de la récupération des dernières sorties :', error);
+    // Fonction pour charger et afficher les films
+    async function fetchAndDisplay(endpoint, containerSelector, isTvShow = false) {
+        try {
+            const response = await fetch(`${BASE_URL}${endpoint}?api_key=${API_KEY}&language=fr-FR`);
+            const data = await response.json();
+            const container = document.querySelector(containerSelector);
+            
+            // Effacer le contenu existant
+            container.querySelector('.swiper-wrapper').innerHTML = '';
+            
+            // Ajouter les nouveaux éléments
+            data.results.slice(0, 10).forEach(media => {
+                createMovieCard(media, container, isTvShow);
+            });
+            
+            // Initialiser Swiper
+            new Swiper(containerSelector, {
+                ...swiperConfig,
+                navigation: {
+                    nextEl: `${containerSelector} .swiper-button-next`,
+                    prevEl: `${containerSelector} .swiper-button-prev`,
+                },
+            });
+        } catch (error) {
+            console.error(`Erreur lors de la récupération des données :`, error);
+        }
     }
-}
 
-// Appeler la fonction pour récupérer les dernières sorties
-fetchLatestReleases();
+    // Charger les trois sections
+    fetchAndDisplay('/movie/now_playing', '.swiper-container-latest');
+    fetchAndDisplay('/movie/top_rated', '.swiper-container');
+    fetchAndDisplay('/tv/top_rated', '.swiper-container-tv', true);
 
-const root = document.documentElement;
-const marqueeElementsDisplayed = getComputedStyle(root).getPropertyValue("--marquee-elements-displayed");
-const marqueeContent = document.querySelector("ul.marquee-content");
+    // Animation du marquee
+    const root = document.documentElement;
+    const marqueeElementsDisplayed = getComputedStyle(root).getPropertyValue("--marquee-elements-displayed");
+    const marqueeContent = document.querySelector("ul.marquee-content");
 
-root.style.setProperty("--marquee-elements", marqueeContent.children.length);
-
-for(let i=0; i<marqueeElementsDisplayed; i++) {
-  marqueeContent.appendChild(marqueeContent.children[i].cloneNode(true));
-}
-
+    if (marqueeContent) {
+        root.style.setProperty("--marquee-elements", marqueeContent.children.length);
+        for (let i = 0; i < marqueeElementsDisplayed; i++) {
+            marqueeContent.appendChild(marqueeContent.children[i].cloneNode(true));
+        }
+    }
 });
