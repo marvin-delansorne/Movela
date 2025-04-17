@@ -30,6 +30,11 @@
     margin: 0;
 }
 
+html {
+    scrollbar-color: #FFAA2B #1A1623;
+    scrollbar-width: thin;
+}
+
 body {
     height: 100vh;
     font-family: var(--main-font);
