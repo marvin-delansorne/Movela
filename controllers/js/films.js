@@ -4,9 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const categoriesContainer = document.getElementById('categories-container');
     const genreButton = document.getElementById('genre-filter-button');
     const genreDropdown = document.getElementById('genre-dropdown');
+    const paginationContainer = document.createElement('div');
+    paginationContainer.className = 'pagination';
+    document.querySelector('.films-main').appendChild(paginationContainer);
     
     let allGenres = [];
     let selectedGenreId = null;
+    let currentPage = 1;
+    const itemsPerPage = 20;
+    let totalPages = 1;
 
     const featuredCategories = [
         { id: 28, name: 'Action' },
@@ -30,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function initGenreFilter() {
         genreButton.addEventListener('click', toggleGenreDropdown);
         
-        // Fermer le dropdown quand on clique ailleurs
         document.addEventListener('click', (e) => {
             if (!genreButton.contains(e.target) && !genreDropdown.contains(e.target)) {
                 genreDropdown.classList.remove('show');
@@ -44,20 +49,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadAllCategories() {
         categoriesContainer.innerHTML = '<div class="loading">Chargement des films...</div>';
+        paginationContainer.innerHTML = '';
         
         try {
-            // Charger tous les genres disponibles
             const genresResponse = await fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=fr-FR`);
             const genresData = await genresResponse.json();
             allGenres = genresData.genres;
             
-            // Remplir le dropdown des genres
             populateGenreDropdown();
-            
-            // Afficher les catégories par défaut
             displayCategories();
-            
-            // Configurer le scroll horizontal
             setupHorizontalScroll();
             
         } catch (error) {
@@ -69,19 +69,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function populateGenreDropdown() {
         genreDropdown.innerHTML = '';
         
-        // Bouton "Tous les genres"
         const allGenresItem = document.createElement('div');
         allGenresItem.className = 'genre-item show-all-genres';
         allGenresItem.textContent = 'Tous les genres';
         allGenresItem.addEventListener('click', () => {
             selectedGenreId = null;
+            currentPage = 1;
             displayCategories();
             genreDropdown.classList.remove('show');
             updateActiveGenre();
         });
         genreDropdown.appendChild(allGenresItem);
         
-        // Ajouter chaque genre
         allGenres.forEach(genre => {
             const genreItem = document.createElement('div');
             genreItem.className = 'genre-item';
@@ -90,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             genreItem.addEventListener('click', () => {
                 selectedGenreId = genre.id;
+                currentPage = 1;
                 displayCategories();
                 genreDropdown.classList.remove('show');
                 updateActiveGenre();
@@ -113,14 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayCategories() {
         categoriesContainer.innerHTML = '';
         
-        // Si un genre est sélectionné, afficher seulement les films de ce genre
         if (selectedGenreId) {
             const genre = allGenres.find(g => g.id === selectedGenreId);
             if (!genre) return;
             
             createSingleGenreSection(genre);
         } else {
-            // Sinon, afficher toutes les catégories comme avant
             featuredCategories.forEach(category => {
                 createCategorySection(category);
             });
@@ -162,18 +160,20 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(
                 `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=fr-FR` +
-                `&sort_by=popularity.desc&page=2&with_genres=${genreId}`
+                `&sort_by=popularity.desc&page=${currentPage}&with_genres=${genreId}`
             );
             const data = await response.json();
+            totalPages = data.total_pages > 500 ? 500 : data.total_pages;
             
             if (data.results?.length > 0) {
                 displayMovies(data.results, moviesContainer);
+                updatePagination();
             }
         } catch (error) {
             console.error(`Erreur genre ${genreId}:`, error);
         }
     }
-    
+
     async function loadMoviesForCategory(genreId) {
         const moviesContainer = document.getElementById(`movies-${genreId}`);
         moviesContainer.innerHTML = '<div>Chargement...</div>';
@@ -181,18 +181,20 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(
                 `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=fr-FR` +
-                `&sort_by=popularity.desc&page=1&with_genres=${genreId}`
+                `&sort_by=popularity.desc&page=${currentPage}&with_genres=${genreId}`
             );
             const data = await response.json();
+            totalPages = data.total_pages > 500 ? 500 : data.total_pages;
             
             if (data.results?.length > 0) {
                 displayMovies(data.results, moviesContainer);
+                updatePagination();
             }
         } catch (error) {
             console.error(`Erreur genre ${genreId}:`, error);
         }
     }
-    
+
     function displayMovies(movies, container) {
         container.innerHTML = '';
         
@@ -220,7 +222,101 @@ document.addEventListener('DOMContentLoaded', () => {
             container.appendChild(movieCard);
         });
     }
-    
+
+    function updatePagination() {
+        paginationContainer.innerHTML = '';
+        
+        if (totalPages <= 1) return;
+
+        // Bouton Précédent
+        const prevButton = document.createElement('button');
+        prevButton.innerHTML = '&laquo;';
+        prevButton.className = 'pagination-button';
+        prevButton.disabled = currentPage === 1;
+        if (currentPage === 1) prevButton.classList.add('disabled');
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                reloadContent();
+            }
+        });
+        paginationContainer.appendChild(prevButton);
+        
+        // Première page
+        if (currentPage > 2) {
+            const firstPage = document.createElement('button');
+            firstPage.textContent = '1';
+            firstPage.className = 'pagination-button';
+            firstPage.addEventListener('click', () => {
+                currentPage = 1;
+                reloadContent();
+            });
+            paginationContainer.appendChild(firstPage);
+            
+            if (currentPage > 3) {
+                const dots = document.createElement('span');
+                dots.textContent = '...';
+                dots.className = 'pagination-dots';
+                paginationContainer.appendChild(dots);
+            }
+        }
+        
+        // Pages autour de la page actuelle
+        for (let i = Math.max(1, currentPage - 1); i <= Math.min(totalPages, currentPage + 1); i++) {
+            const pageButton = document.createElement('button');
+            pageButton.textContent = i;
+            pageButton.className = 'pagination-button';
+            if (i === currentPage) pageButton.classList.add('active');
+            pageButton.addEventListener('click', () => {
+                currentPage = i;
+                reloadContent();
+            });
+            paginationContainer.appendChild(pageButton);
+        }
+        
+        // Dernière page
+        if (currentPage < totalPages - 1) {
+            if (currentPage < totalPages - 2) {
+                const dots = document.createElement('span');
+                dots.textContent = '...';
+                dots.className = 'pagination-dots';
+                paginationContainer.appendChild(dots);
+            }
+            
+            const lastPage = document.createElement('button');
+            lastPage.textContent = totalPages;
+            lastPage.className = 'pagination-button';
+            lastPage.addEventListener('click', () => {
+                currentPage = totalPages;
+                reloadContent();
+            });
+            paginationContainer.appendChild(lastPage);
+        }
+        
+        // Bouton Suivant
+        const nextButton = document.createElement('button');
+        nextButton.innerHTML = '&raquo;';
+        nextButton.className = 'pagination-button';
+        nextButton.disabled = currentPage === totalPages;
+        if (currentPage === totalPages) nextButton.classList.add('disabled');
+        nextButton.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                reloadContent();
+            }
+        });
+        paginationContainer.appendChild(nextButton);
+    }
+
+    function reloadContent() {
+        if (selectedGenreId) {
+            loadMoviesForGenre(selectedGenreId);
+        } else {
+            displayCategories();
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     function setupHorizontalScroll() {
         const scrollContainers = document.querySelectorAll('.movies-scroll-container');
         
