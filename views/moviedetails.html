@@ -9,19 +9,18 @@
     <link rel="stylesheet" href="/Movela/public/css/root.css">
     <link rel="stylesheet" href="/Movela/public/css/moviedetails.css">
     <title id="DOMtitle"></title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body>
     <main class="text-white">
         <section class="w-full flex">
-            <figure class="w-1/2">
+            <figure class="w-1/2 md:w-2/6">
                 <!-- inserer ici l'image liée au film de l'api -->
                 <img id="movieImg" class="w-full" src="" alt="">
             </figure>
-            <article class="w-1/2 flex flex-col items-center justify-around">
+            <article class="w-1/2 md:w-4/6 flex flex-col items-center justify-around">
                 <!-- titre dinamique du film -->
                  <div class="flex flex-col items-center gap-1">
-                     <h2 id="movieTitle" class="text-xl"></h2>
+                     <h2 id="movieTitle" class="text-xl font-black"></h2>
                      <span id="releaseDate" class="text-xs"></span>
                      <ul id="movieGenresDiv" class="flex flex-wrap justify-center gap-1 text-xs w-8/10">
                         <!-- li genres -->
@@ -36,50 +35,58 @@
                         <li class="star-empty"></li>
                     </ul>
                  </div>
+                 <div class="hidden md:flex md:flex-col">
+                    <h3 class="m-2 text-cta-color font-black">Description</h3>
+                    <!-- description dynamique du film pour le format bureau-->
+                    <p id="movieDescD" class="p-2"></p>
+                 </div>
+                 <article class="hidden md:block overflow-hidden w-full">
+                    <h3 class="m-2 text-cta-color font-black">Acteurs</h3>
+                    <!-- liste dynamique d'acteurs -->
+                    <ul id="movieActorListD" class="flex overflow-x-auto space-x-4 gap-1 pb-2">
+                        <!-- générer les li avec nom des acteurs -->
+                    <ul>
+                </article>
             </article>
         </section>
         <section>
-            <article>
-                <h3>Description</h3>
+            <article class="flex flex-col md:hidden">
+                <h3 class="m-2 text-cta-color font-black">Description</h3>
                 <!-- description dynamique du film -->
-                <p id="movieDesc"></p>
+                <p id="movieDescM" class="p-2"></p>
             </article>
-            <article>
-                <h3>Acteurs</h3>
+            <article class="block md:hidden">
+                <h3 class="m-2 text-cta-color font-black">Acteurs</h3>
                 <!-- liste dynamique d'acteurs -->
-                <ul id="movieActorList" class="flex overflow-x-auto space-x-4 gap-1">
+                <ul id="movieActorListM" class="flex overflow-x-auto space-x-4 gap-1 pb-2">
                     <!-- générer les li avec nom des acteurs -->
                 <ul>
-                <!-- <style>
-                    #movieActorList {
-                        li {
-                            flex-shrink: 0;
-                            img {
-                                height: auto;
-                                width: 134px;
-                            }
-                        }
-                    }
-                </style> -->
             </article>
         </section>
-        <section class="bg-black h-48">
+        <section class="h-64 mt-2">
             <div id="comListDiv" class="h-auto">
                 <ul id="comList">
                     <!-- générer les li par commentaire laissé -->
                 </ul>
             </div>
-            <div class="bg-white h-32">
-                <h3 class="text-black">Laissez un avis</h3>
-                <form class="bg-red-300 flex flex-col items-center gap-1" method="POST">
-                    <input class="bg-blue-100 w-8/10 placeholder:text-black focus:outline-none" type="text" placeholder="Pseudo" required>
-                    <input class="bg-blue-100 w-8/10 placeholder:text-black focus:outline-none" type="text" placeholder="Votre commentaire" required>
-                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Envoyer</button>
+            <div id="divForm" class="h-full flex flex-col justify-center gap-1">
+                <h3 class="text-cta-color text-center font-bold">Laissez un avis</h3>
+                <form class="flex flex-col items-center justify-center gap-1 h-5/10" method="POST">
+                    <div class="flex flex-col">
+                        <span>Pseudo</span>
+                        <input class="bg-little-btn p-1 rounded-sm placeholder:text-grey-200 placeholder:italic" type="text" placeholder="Movela..." required>
+                    </div>
+                    <div class="flex flex-col">
+                        <span>Commentaire</span>
+                        <input class="bg-little-btn p-1 rounded-sm placeholder:text-grey-200 placeholder:italic" type="text" placeholder="Votre commentaire..." required>
+                    </div>
+                    <button type="submit" class="bg-cta text-white mt-2 px-4 py-2 rounded hover:bg-cta-hover">Envoyer</button>
                 </form>
             </div>
         </section>
     </main>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
-    <script type="module" src="/Movela/controllers/js/moviedetails1.js"></script>
+    <script type="module" src="/Movela/controllers/js/moviedetails1.js" defer></script>
 </body>
 </html>

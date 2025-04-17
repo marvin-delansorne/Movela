@@ -83,20 +83,34 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                         
 
-                        document.getElementById('movieDesc').textContent = movie.overview;
+                        document.getElementById('movieDescD').textContent = movie.overview;
+                        document.getElementById('movieDescM').textContent = movie.overview;
                 
-                        const actorList = document.getElementById("movieActorList");
+                        const actorListD = document.getElementById("movieActorListD");
                         credits.cast.slice(0, 10).forEach(actor => {
                             const li = document.createElement("li");
-                            li.setAttribute("class", "shrink-0 h-auto w-32 rounded-t-lg bg-little-btn")
+                            li.setAttribute("class", "shrink-0 h-auto w-32 rounded-t-lg rounded-b-lg bg-little-btn")
                             li.innerHTML = `
                                 <img class="h-auto w-full rounded-t-lg" src="${IMG_BASE_URL}${actor.profile_path}" alt="Photo de ${actor.name}">
-                                <div class="text-center mt-4 w-32">
+                                <div class="text-center mt-4 mb-2 w-32">
+                                    <span class="block font-semibold break-words text-cta-color">${actor.name}</span>
+                                    <span class="text-sm text-gray-300 mb-1">${actor.character}</span>
+                                </div>
+                            `;
+                            actorListD.appendChild(li);
+                        });
+                        const actorListM = document.getElementById("movieActorListM");
+                        credits.cast.slice(0, 10).forEach(actor => {
+                            const li = document.createElement("li");
+                            li.setAttribute("class", "shrink-0 h-auto w-32 rounded-t-lg rounded-b-lg bg-little-btn")
+                            li.innerHTML = `
+                                <img class="h-auto w-full rounded-t-lg pointer-events-none" src="${IMG_BASE_URL}${actor.profile_path}" alt="Photo de ${actor.name}">
+                                <div class="text-center mt-4 mb-2 w-32">
                                     <span class="block font-semibold break-words text-cta-color">${actor.name}</span>
                                     <span class="text-sm text-gray-300">${actor.character}</span>
                                 </div>
                             `;
-                            actorList.appendChild(li);
+                            actorListM.appendChild(li);
                         });
                     } catch (err) {
                         console.error("Erreur lors de la récupération du film :", err);
@@ -137,8 +151,16 @@ document.addEventListener("DOMContentLoaded", () => {
                         const comList = document.getElementById("comList");
                         const li = document.createElement("li");
                         li.setAttribute("class", "bg-gray-800 text-white p-2 rounded mb-2");
+
+                        const now = new Date();
+                        const formattedDate = now.toLocaleDateString("fr-FR", {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric"
+                        });
+
                         li.innerHTML = `
-                            <p><strong>${pseudo}</strong> :</p>
+                            <p><strong>${pseudo}</strong> <span class="text-gray-400 text-sm">(${formattedDate})</span> :</p>
                             <p>${commentaire}</p>
                         `;
                         comList.appendChild(li);
