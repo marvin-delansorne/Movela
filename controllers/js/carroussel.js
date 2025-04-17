@@ -24,6 +24,8 @@ async function fetchMoviePosters() {
                     <p>${movie.release_date?.substring(0, 4) || 'N/A'}</p>
                     <p class="rating"><i class="fas fa-star"></i> ${movie.vote_average?.toFixed(1) || 'N/A'}/10</p>
                 </div>
+
+       
             `;
             swiperWrapper.appendChild(slide);
         });
@@ -116,7 +118,7 @@ async function fetchLatestReleases() {
             slide.className = 'swiper-slide';
             slide.innerHTML = `
                 <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}" />
-                <button class="add-to-favorites"><i class="fa fa-plus"></i>Favoris</button>
+                <button class="add-to-favorites"><i class="fa fa-plus">Favoris</button>
                 <div class="movie-info">
                     <h3>${movie.title}</h3>
                     <p> ${movie.release_date?.substring(0, 4) || 'N/A'}</p>

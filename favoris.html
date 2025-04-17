@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="./public/css/fav.css">
+    <link rel="stylesheet" href="./public/css/root.css">
+    <link rel="stylesheet" href="./public/css/nav.css">
+    <link rel="stylesheet" href="./public/css/style.css">
+    <script src="./controllers/js/favoris.js"defer></script>
+    <script src="./controllers/js/search.js"defer></script>
+    <script src="./controllers/js/nav.js"defer></script>
+    <script src="./controllers/js/carroussel.js"></script>
+    <title>MOVELA - Accueil</title>
+</head>
+<body>
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
+    <main class="favoris-main">
+        <h1>Mes Favoris</h1>
+        <div id="favoris-container">
+            <!-- Les cartes des favoris seront insérées ici dynamiquement -->
+        </div>
+    </main>
+
+   
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initNavbar();
+        });
+    </script>
+</body>
+</html>
