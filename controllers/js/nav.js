@@ -18,7 +18,7 @@ function createNavbar() {
             </div>
             
             <div class="logo-container">
-                <div class="logo">MOVELA</div>
+                <div class="logo"><img src="./public/assets/logo.png" alt="MOVELA Logo"></div>
             </div>
             
             <div class="nav-section right">

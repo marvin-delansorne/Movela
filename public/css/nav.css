@@ -37,6 +37,9 @@ body {
   left: 50%;
   transform: translateX(-50%);
   z-index: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .logo {
@@ -46,6 +49,16 @@ body {
   font-family: 'Impact', sans-serif;
   letter-spacing: 1px;
   white-space: nowrap;
+}
+.logo img {
+  max-height: 30px;
+  width: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .logo img {
+    max-height: 25px;
+  }
 }
 
 .search-box {
