@@ -18,7 +18,7 @@ body{
 
 .heropage_content{
   
-    padding-top: 200px;
+    padding-top: 100px;     
     padding-left: 50px;
     width: 25%;
     display: flex;
@@ -88,8 +88,8 @@ body{
 .swiper-slide {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    align-items: start;
+    text-align:left;
     transform: 0.3s ease-in-out;
     transition: transform 0.3s ease-in-out;
 }
@@ -101,9 +101,9 @@ body{
     max-width: 250px;
     box-shadow: 0px 0px 25.8px 0px black;
     margin-bottom: 10px;
-    
-    
 }
+
+
 
 .swiper-slide:hover {
     transform: scale(1.10);
@@ -198,7 +198,7 @@ body{
 
 .latest-releases {
     padding: 20px;
-    text-align: center;
+    text-align: left;
     color: var(--text-color);
     overflow: hidden;
 
@@ -225,7 +225,7 @@ body{
 }
 
 .swiper-container-latest .swiper-slide .movie-info {
-    text-align: center;
+    text-align: left;
     font-size: 14px;
     color: var(--text-color);
 }
@@ -248,4 +248,57 @@ h2{
     padding-left: 10px;
     border-left: 4px solid var(--cta-color);
     color: var(--text-color);
+}
+
+
+/* Conteneur de la carte */
+.movie-card {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Style de l'image */
+.movie-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease; /* Animation pour zoomer légèrement l'image */
+}
+
+/* Zoom de l'image au survol */
+.movie-card:hover img {
+    transform: scale(1.1);
+}
+
+/* Style du bouton "Ajouter aux favoris" */
+.add-to-favorites {
+    border: solid 2px var(--cta-color);
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 300px;
+    z-index: 100000;
+    left: 50%;
+    transform: translateX(-50%);
+    width:120px;
+    height: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    color:white;
+    background-color: var(--cta-color) ;
+    cursor: pointer;
+    opacity: 0; /* Caché par défaut */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translate(-50%, 20px); /* Décalage initial */
+}
+
+/* Apparition du bouton au survol */
+.swiper-slide:hover .add-to-favorites {
+    opacity: 1; /* Rendre visible */
+    transform: translate(-50%, 0); /* Remonter à sa position */
 }
