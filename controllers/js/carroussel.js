@@ -17,7 +17,8 @@ async function fetchMoviePosters() {
             const slide = document.createElement('div');
             slide.className = 'swiper-slide';
             slide.innerHTML = `
-                <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}" />
+                <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}"/>
+                <button class="add-to-favorites"><i class="fa fa-plus"></i>Favoris</button>
                 <div class="movie-info">
                     <h3>${movie.title}</h3>
                     <p>${movie.release_date?.substring(0, 4) || 'N/A'}</p>
@@ -66,6 +67,7 @@ async function fetchTopRatedTVShows() {
             slide.className = 'swiper-slide';
             slide.innerHTML = `
                 <img src="https://image.tmdb.org/t/p/w500${show.poster_path}" alt="${show.name}" />
+                <button class="add-to-favorites"><i class="fa fa-plus"></i>Favoris</button>
                 <div class="serie-info">
                     <h3><stong>${show.name}<stong></h3>
                     <p>${show.first_air_date?.substring(0, 4) || 'N/A'}</p>
@@ -114,6 +116,7 @@ async function fetchLatestReleases() {
             slide.className = 'swiper-slide';
             slide.innerHTML = `
                 <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}" />
+                <button class="add-to-favorites"><i class="fa fa-plus"></i>Favoris</button>
                 <div class="movie-info">
                     <h3>${movie.title}</h3>
                     <p> ${movie.release_date?.substring(0, 4) || 'N/A'}</p>
