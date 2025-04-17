@@ -1,0 +1,36 @@
+.p-5px {
+    padding: 5px;
+}
+
+.bg-little-btn {
+    background-color: #312A41;
+}
+
+.text-cta-color {
+    color: var(--cta-color);
+}
+
+.bg-cta {
+    background-color: var(--cta-color);
+}
+
+#divForm {
+    button:hover {
+        background-color: var(--cta-hover);
+    }
+}
+
+.star-img-wh20px {
+    width: 20px;
+    height: 20px;
+}
+
+#divForm {
+    input {
+        transition: 0.3s ease;
+    }
+    input:focus {
+        box-shadow: var(--cta-color) inset 0 -4px;
+        outline: none;
+    }
+}
