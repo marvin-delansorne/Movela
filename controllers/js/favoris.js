@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Charger les favoris depuis le localStorage
     function loadFavoris() {
-        const favoris = JSON.parse(localStorage.getItem('favoris')) || [];
+        const favoris = JSON.parse(localStorage.getItem('movieFavorites')) || [];
         favorisContainer.innerHTML = '';
 
         if (favoris.length === 0) {
@@ -12,15 +12,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         favoris.forEach(favori => {
+            if (!favori.image || !favori.title) {
+                console.error('Données manquantes pour le favori :', favori);
+                return;
+            }
+
             const card = document.createElement('div');
             card.className = 'favoris-card';
             card.innerHTML = `
                 <img src="${favori.image}" alt="${favori.title}">
                 <div class="card-info">
                     <h3>${favori.title}</h3>
-                    <p>Année : ${favori.year}</p>
+                    <p class="rating"><i class="fas fa-star"></i> ${favori.vote_average || '0'}/10</p>
                 </div>
-                <button class="remove-favorite" data-id="${favori.id}">&times;</button>
+                <button class="remove-favorite" data-id="${favori.id}">Supprimer</button>
             `;
             favorisContainer.appendChild(card);
         });
@@ -36,9 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Supprimer un favori
     function removeFavori(id) {
-        let favoris = JSON.parse(localStorage.getItem('favoris')) || [];
+        let favoris = JSON.parse(localStorage.getItem('movieFavorites')) || [];
         favoris = favoris.filter(favori => favori.id !== id);
-        localStorage.setItem('favoris', JSON.stringify(favoris));
+        localStorage.setItem('movieFavorites', JSON.stringify(favoris));
         loadFavoris();
     }
 

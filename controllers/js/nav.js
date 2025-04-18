@@ -10,15 +10,15 @@ function createNavbar() {
                     <span></span>
                 </div>
                 <div class="desktop-nav">
-                    <a href="../index.html">Accueil</a>
-                    <a href="../views/films.html">Films</a>
-                    <a href="../views/series.html">Séries</a>
-                    <a href="#">Favoris</a>
+                    <a href="/Movela/index.html">Accueil</a>
+                    <a href="/Movela/views/films.html">Films</a>
+                    <a href="/Movela/views/series.html">Séries</a>
+                    <a href="/Movela/views/favoris.html">Favoris</a>
                 </div>
             </div>
             
             <div class="logo-container">
-                <div class="logo"><img src="../public/assets/logo.png" alt="MOVELA Logo"></div>
+                <div class="logo"><img src="/movela/public/assets/logo.png" alt="MOVELA Logo"></div>
             </div>
             
             <div class="nav-section right">
@@ -34,10 +34,10 @@ function createNavbar() {
                 <div class="menu-header-text">Menu</div>
             </div>
             <ul class="menu-list">
-                <li class="menu-item"><a href="../index.html">Accueil</a></li>
-                <li class="menu-item"><a href="../views/films.html">Films</a></li>
-                <li class="menu-item"><a href="../views/series.html">Séries</a></li>
-                <li class="menu-item"><a href="#">Favoris</a></li>
+                <li class="menu-item"><a href="/Movela/index.html">Accueil</a></li>
+                <li class="menu-item"><a href="/Movela/views/films.html">Films</a></li>
+                <li class="menu-item"><a href="/Movela/views/series.html">Séries</a></li>
+                <li class="menu-item"><a href="/Movela/views/favoris.html">Favoris</a></li>
             </ul>
         </div>
     `;
