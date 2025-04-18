@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPage = 1;
     const itemsPerPage = 20;
     let totalPages = 1;
+    let favorites = JSON.parse(localStorage.getItem('tvFavorites')) || [];
 
-    // Catégories principales à afficher par défaut
     const featuredCategories = [
         { id: 10759, name: 'Action & Aventure' },
         { id: 16, name: 'Animation' },
@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialisation
     initGenreFilter();
     loadAllCategories();
+    setupFavoritesListener();
 
     function initGenreFilter() {
         genreButton.addEventListener('click', toggleGenreDropdown);
@@ -48,6 +49,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function toggleGenreDropdown() {
         genreDropdown.classList.toggle('show');
+    }
+
+    function setupFavoritesListener() {
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.add-to-favorites')) {
+                const button = e.target.closest('.add-to-favorites');
+                const serieId = button.dataset.serieId;
+                toggleFavorite(serieId, button);
+            }
+        });
+    }
+
+    function toggleFavorite(serieId, button) {
+        const index = favorites.indexOf(serieId);
+        if (index === -1) {
+            favorites.push(serieId);
+            button.classList.add('added');
+            button.innerHTML = '<i class="fas fa-check"></i> Ajouté';
+        } else {
+            favorites.splice(index, 1);
+            button.classList.remove('added');
+            button.innerHTML = '<i class="fas fa-plus"></i> Favoris';
+        }
+        localStorage.setItem('tvFavorites', JSON.stringify(favorites));
     }
 
     async function loadAllCategories() {
@@ -166,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `&sort_by=popularity.desc&page=${currentPage}&with_genres=${genreId}`
             );
             const data = await response.json();
-            totalPages = data.total_pages > 500 ? 500 : data.total_pages; // API limite à 500 pages
+            totalPages = data.total_pages > 500 ? 500 : data.total_pages;
             
             if (data.results?.length > 0) {
                 displaySeries(data.results, seriesContainer);
@@ -204,10 +229,13 @@ document.addEventListener('DOMContentLoaded', () => {
         series.forEach(serie => {
             const serieCard = document.createElement('div');
             serieCard.className = 'serie-card';
+            serieCard.dataset.id = serie.id;
             
             const posterPath = serie.poster_path 
                 ? `https://image.tmdb.org/t/p/w500${serie.poster_path}`
                 : 'https://via.placeholder.com/500x750?text=Image+indisponible';
+            
+            const isFavorite = favorites.includes(serie.id.toString());
             
             serieCard.innerHTML = `
                 <img src="${posterPath}" alt="${serie.name}" loading="lazy">
@@ -216,10 +244,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p>${serie.first_air_date?.substring(0, 4) || 'N/A'}</p>
                     <p class="rating"><i class="fas fa-star"></i> ${serie.vote_average?.toFixed(1) || 'N/A'}/10</p>
                 </div>
+                <button class="add-to-favorites" data-serie-id="${serie.id}">
+                    <i class="fas fa-plus"></i> Favoris
+                </button>
             `;
             
-            serieCard.addEventListener('click', () => {
-                window.location.href = `serie-details.html?id=${serie.id}`;
+            if (isFavorite) {
+                const favButton = serieCard.querySelector('.add-to-favorites');
+                favButton.classList.add('added');
+                favButton.innerHTML = '<i class="fas fa-check"></i> Ajouté';
+            }
+            
+            serieCard.addEventListener('click', (e) => {
+                if (!e.target.closest('.add-to-favorites')) {
+                    window.location.href = `serie-details.html?id=${serie.id}`;
+                }
             });
             
             container.appendChild(serieCard);

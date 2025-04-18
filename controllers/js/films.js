@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPage = 1;
     const itemsPerPage = 20;
     let totalPages = 1;
+    let favorites = JSON.parse(localStorage.getItem('movieFavorites')) || [];
 
     const featuredCategories = [
         { id: 28, name: 'Action' },
@@ -32,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialisation
     initGenreFilter();
     loadAllCategories();
+    setupFavoritesListener();
 
     function initGenreFilter() {
         genreButton.addEventListener('click', toggleGenreDropdown);
@@ -45,6 +47,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function toggleGenreDropdown() {
         genreDropdown.classList.toggle('show');
+    }
+
+    function setupFavoritesListener() {
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.add-to-favorites')) {
+                const button = e.target.closest('.add-to-favorites');
+                const movieId = button.dataset.movieId;
+                toggleFavorite(movieId, button);
+            }
+        });
+    }
+
+    function toggleFavorite(movieId, button) {
+        const index = favorites.indexOf(movieId);
+        if (index === -1) {
+            favorites.push(movieId);
+            button.classList.add('added');
+            button.innerHTML = '<i class="fas fa-check"></i> Ajouté';
+        } else {
+            favorites.splice(index, 1);
+            button.classList.remove('added');
+            button.innerHTML = '<i class="fas fa-plus"></i> Favoris';
+        }
+        localStorage.setItem('movieFavorites', JSON.stringify(favorites));
     }
 
     async function loadAllCategories() {
@@ -201,10 +227,13 @@ document.addEventListener('DOMContentLoaded', () => {
         movies.forEach(movie => {
             const movieCard = document.createElement('div');
             movieCard.className = 'movie-card';
+            movieCard.dataset.id = movie.id;
             
             const posterPath = movie.poster_path 
                 ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
                 : 'https://via.placeholder.com/500x750?text=Image+indisponible';
+            
+            const isFavorite = favorites.includes(movie.id.toString());
             
             movieCard.innerHTML = `
                 <img src="${posterPath}" alt="${movie.title}" loading="lazy">
@@ -213,10 +242,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p>${movie.release_date?.substring(0, 4) || 'N/A'}</p>
                     <p class="rating"><i class="fas fa-star"></i> ${movie.vote_average?.toFixed(1) || 'N/A'}/10</p>
                 </div>
+                <button class="add-to-favorites" data-movie-id="${movie.id}">
+                    <i class="fas fa-plus"></i> Favoris
+                </button>
             `;
             
-            movieCard.addEventListener('click', () => {
-                window.location.href = `details.html?id=${movie.id}`;
+            if (isFavorite) {
+                const favButton = movieCard.querySelector('.add-to-favorites');
+                favButton.classList.add('added');
+                favButton.innerHTML = '<i class="fas fa-check"></i> Ajouté';
+            }
+            
+            movieCard.addEventListener('click', (e) => {
+                if (!e.target.closest('.add-to-favorites')) {
+                    window.location.href = `details.html?id=${movie.id}`;
+                }
             });
             
             container.appendChild(movieCard);
