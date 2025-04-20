@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             serieCard.addEventListener('click', (e) => {
                 if (!e.target.closest('.add-to-favorites')) {
-                    window.location.href = `serie-details.html?id=${serie.id}`;
+                    window.location.href = `details.html?id=${serie.id}&type=tv`;
                 }
             });
             

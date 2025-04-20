@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             movieCard.addEventListener('click', (e) => {
                 if (!e.target.closest('.add-to-favorites')) {
-                    window.location.href = `details.html?id=${movie.id}`;
+                    window.location.href = `details.html?id=${movie.id}&type=movie`;
                 }
             });
             

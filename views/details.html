@@ -7,27 +7,29 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/Movela/public/css/root.css">
+    <link rel="stylesheet" href="/Movela/public/css/nav.css">
     <link rel="stylesheet" href="/Movela/public/css/moviedetails.css">
     <title id="DOMtitle"></title>
 </head>
 <body>
+    <div id="navbar-container"></div>
     <main class="text-white">
         <section class="w-full flex">
             <figure class="w-1/2 md:w-2/6">
                 <!-- inserer ici l'image liée au film de l'api -->
-                <img id="movieImg" class="w-full" src="" alt="">
+                <img id="contentImg" class="w-full" src="" alt="">
             </figure>
             <article class="w-1/2 md:w-4/6 flex flex-col items-center justify-around">
                 <!-- titre dinamique du film -->
                  <div class="flex flex-col items-center gap-1">
-                     <h2 id="movieTitle" class="text-xl font-black"></h2>
+                     <h2 id="contentTitle" class="text-xl font-black"></h2>
                      <span id="releaseDate" class="text-xs"></span>
-                     <ul id="movieGenresDiv" class="flex flex-wrap justify-center gap-1 text-xs w-8/10">
+                     <ul id="contentGenresDiv" class="flex flex-wrap justify-center gap-1 text-xs w-8/10">
                         <!-- li genres -->
                      </ul>
                  </div>
-                 <div id="movieReview" class="flex flex-col items-center">
-                    <ul id="movieReviewList" class="flex">
+                 <div id="contentReview" class="flex flex-col items-center">
+                    <ul id="contentReviewList" class="flex">
                         <li class="star-full"></li>
                         <li class="star-full"></li>
                         <li class="star-full"></li>
@@ -38,12 +40,12 @@
                  <div class="hidden md:flex md:flex-col">
                     <h3 class="m-2 text-cta-color font-black">Description</h3>
                     <!-- description dynamique du film pour le format bureau-->
-                    <p id="movieDescD" class="p-2"></p>
+                    <p id="contentDescD" class="p-2"></p>
                  </div>
                  <article class="hidden md:block overflow-hidden w-full">
                     <h3 class="m-2 text-cta-color font-black">Acteurs</h3>
                     <!-- liste dynamique d'acteurs -->
-                    <ul id="movieActorListD" class="flex overflow-x-auto space-x-4 gap-1 pb-2">
+                    <ul id="contentActorListD" class="flex overflow-x-auto space-x-4 gap-1 pb-2">
                         <!-- générer les li avec nom des acteurs -->
                     <ul>
                 </article>
@@ -53,15 +55,22 @@
             <article class="flex flex-col md:hidden">
                 <h3 class="m-2 text-cta-color font-black">Description</h3>
                 <!-- description dynamique du film -->
-                <p id="movieDescM" class="p-2"></p>
+                <p id="contentDescM" class="p-2"></p>
             </article>
             <article class="block md:hidden">
                 <h3 class="m-2 text-cta-color font-black">Acteurs</h3>
                 <!-- liste dynamique d'acteurs -->
-                <ul id="movieActorListM" class="flex overflow-x-auto space-x-4 gap-1 pb-2">
+                <ul id="contentActorListM" class="flex overflow-x-auto space-x-4 gap-1 pb-2">
                     <!-- générer les li avec nom des acteurs -->
                 <ul>
             </article>
+        </section>
+        <section class="mt-4">
+            <div id="recoDiv">
+                <ul id="contentRecoList" class="flex overflow-x-auto space-x-4 gap-1 pb-2">
+                    <!-- générer les li avec nom des acteurs -->
+                <ul>
+            </div>
         </section>
         <section class="h-64 mt-2">
             <div id="comListDiv" class="h-auto">
@@ -87,6 +96,13 @@
     </main>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
-    <script type="module" src="/Movela/controllers/js/moviedetails.js" defer></script>
+    <script src="../controllers/js/nav.js"></script>
+    <script src="../controllers/js/search.js"></script>
+    <script src="/Movela/controllers/js/moviedetails.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initNavbar();
+        });
+    </script>
 </body>
 </html>

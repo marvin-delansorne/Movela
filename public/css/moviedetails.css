@@ -14,12 +14,6 @@
     background-color: var(--cta-color);
 }
 
-#divForm {
-    button:hover {
-        background-color: var(--cta-hover);
-    }
-}
-
 .star-img-wh20px {
     width: 20px;
     height: 20px;
@@ -32,5 +26,8 @@
     input:focus {
         box-shadow: var(--cta-color) inset 0 -4px;
         outline: none;
+    }
+    button:hover {
+        background-color: var(--cta-hover);
     }
 }
