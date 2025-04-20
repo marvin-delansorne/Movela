@@ -91,10 +91,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (favoriteBtn) {
                 favoriteBtn.onclick = (e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     toggleFavorite(movie.id);
                 };
             }
         }, 500);
+        heroSection.addEventListener('click', (e) => {
+            if (!e.target.closest('.add-to-favorites')) {
+                window.location.href = `views/details.html?id=${movie.id}&type=movie`;
+            }
+        });
     }
 
     // Crée les indicateurs de slide

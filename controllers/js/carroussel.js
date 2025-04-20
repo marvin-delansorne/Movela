@@ -86,6 +86,16 @@ document.addEventListener('DOMContentLoaded', () => {
             </button>
         `;
 
+        mediaCard.addEventListener('click', (e) => {
+            if (!e.target.closest('.add-to-favorites')) {
+                if (!isTvShow) {
+                    window.location.href = `views/details.html?id=${media.id}&type=movie`;
+                } else if (isTvShow) {
+                    window.location.href = `views/details.html?id=${media.id}&type=tv`;
+                }
+            }
+        });
+
         // Gestionnaire d'événements pour le bouton "Ajouter aux favoris"
         mediaCard.querySelector('.add-to-favorites').addEventListener('click', (e) => {
             e.stopPropagation();
