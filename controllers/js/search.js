@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         resultItem.addEventListener('click', () => {
-          window.location.href = `details.html?id=${movie.id}`;
+          window.location.href = `/Movela/views/details.html?id=${movie.id}&type=movie`;
         });
         
         searchResults.appendChild(resultItem);
